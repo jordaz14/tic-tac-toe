@@ -4,7 +4,7 @@ var figlet = require("figlet");
 
 // MAIN CODE
 
-// Dispalys opening welcome message
+// Displays opening welcome message
 openingSequence();
 
 setTimeout(() => {
