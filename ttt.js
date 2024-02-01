@@ -15,7 +15,6 @@ setTimeout(() => {
 
   // Establish variables
   var turnCount = 1;
-  var symbol1, symbol2;
   var endGame = false;
   const gameBoard = [
     ["-", "-", "-"],
@@ -40,7 +39,7 @@ setTimeout(() => {
     displayBoard(gameBoard);
 
     // Determines which players are 'X' and 'O', evaluates to array of [X, O] or [O, X]
-    symbolResult = selectSymbol(symbol1, symbol2);
+    symbolResult = selectSymbol("Player 2");
 
     // Do-while loop: Plays game until winner is determined or gameBoard is full
     do {
@@ -116,6 +115,7 @@ function openingSequence() {
   }, 3000);
 }
 
+// Displays gameBoard to user using ACII block characters
 function displayBoard(gameBoard) {
   for (var rowI = 0; rowI < 3; rowI++) {
     console.log(
@@ -133,19 +133,19 @@ function displayBoard(gameBoard) {
   }
 }
 
-function selectSymbol(symbol1, symbol2) {
-  // Prompts Player 1 to select X or O symbol
+// Prompts Player 1 to select X or O symbol
+function selectSymbol(player2Name) {
   do {
-    symbol1 = prompt(`Player 1, are you X's or O's? `).toUpperCase();
+    var symbol1 = prompt(`Player 1, are you X's or O's? `).toUpperCase();
   } while (symbol1 != "X" && symbol1 != "O");
 
   // If Player 1 selects 'X', Player 2 is 'O'; vice versa
   if (symbol1 == "X") {
-    symbol2 = "O";
-    console.log("Player 1 has selected 'X'; Player 2, you are 'O'.");
+    var symbol2 = "O";
+    console.log(`Player 1 has selected 'X'; ${player2Name} is 'O'.`);
   } else {
-    symbol2 = "X";
-    console.log("Player 1 has selected 'O'; Player 2, you are 'X'.");
+    var symbol2 = "X";
+    console.log(`Player 1 has selected 'O'; ${player2Name} is 'X'.`);
   }
   return [symbol1, symbol2];
 }
@@ -175,6 +175,7 @@ function userSelectMove(gameBoard, turnCount, player) {
       regEx.test(col) == false
     );
   } while (
+    // Checks that user's choice is not yet claimed
     gameBoard[row - 1][col - 1] == "X" ||
     gameBoard[row - 1][col - 1] == "O"
   );
@@ -184,7 +185,7 @@ function userSelectMove(gameBoard, turnCount, player) {
 }
 
 function checkWinner(gameBoard, player) {
-  // Check rows in gameBoard for winning sequence
+  // Check each row in gameBoard for winning sequence
   for (var rowI = 0; rowI < 3; rowI++) {
     // Reports winner if all entries in a row match the user's symbol
     if (
@@ -197,7 +198,7 @@ function checkWinner(gameBoard, player) {
     }
   }
 
-  // Check cols in gameBoard for winning sequence
+  // Check each col in gameBoard for winning sequence
   for (var colI = 0; colI < 3; colI++) {
     // Reports winner if all entries in a col match the user's symbol
     if (
@@ -212,11 +213,11 @@ function checkWinner(gameBoard, player) {
 
   // Check diagonals in gameBoard for winning sequence
   if (
-    // Upper-left, lower-right diagonal
+    // Upper-left, lower-right diagonal match
     (gameBoard[0][0] == player &&
       gameBoard[1][1] == player &&
       gameBoard[2][2] == player) ||
-    // Upper-right, lower-left diagonal
+    // Upper-right, lower-left diagonal match
     (gameBoard[2][0] == player &&
       gameBoard[1][1] == player &&
       gameBoard[0][2] == player)
@@ -225,5 +226,6 @@ function checkWinner(gameBoard, player) {
     return true;
   }
 
+  // If no winning sequence, return false
   return false;
 }
