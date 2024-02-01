@@ -13,7 +13,7 @@ setTimeout(() => {
     var enter = prompt("Press 'Enter' to Begin: ");
   } while (enter != "");
 
-  // Establish variables
+  // Establish turn counter, game status, and game board variables
   var turnCount = 1;
   var endGame = false;
   const gameBoard = [
