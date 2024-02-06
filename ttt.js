@@ -30,7 +30,49 @@ setTimeout(() => {
   // 1-PLAYER MODE
   if (playersCount == "1P") {
     console.log("Welcome to 1-Player Mode \nHere is The Board:");
-    // [Enter Code Here]
+    displayBoard(gameBoard);
+
+    symbolResult = selectSymbol("The Bot");
+
+    // Do-while loop: Plays game until winner is determined or gameBoard is full
+    do {
+      // Using turn count, determines...
+      // If game is over
+      if (turnCount == 10) {
+        console.log("Game over. No winner declared.");
+        break;
+      } // If player 1's turn
+      else if (turnCount % 2 == 1) {
+        var player = symbolResult[0];
+        // Prompts user to select a row and col on gameBoard
+        userSelectMove(gameBoard, turnCount, player);
+      } // If player 2's turn
+      else {
+        var player = symbolResult[1];
+        console.log("Bot's turn");
+        do {
+          //Do-while loop: validates that users selects a row # between 1-3
+          var botRow = getRandomInt(3);
+          var botCol = getRandomInt(3);
+        } while (
+          // Checks that user's choice is not yet claimed
+          gameBoard[botRow][botCol] == "X" ||
+          gameBoard[botRow][botCol] == "O"
+        );
+        // Adds user's symbol (i.e. 'X' or 'O') to their selected space
+        gameBoard[botRow][botCol] = player;
+      }
+
+      // Displays current state of gameBoard
+      console.log(`Board after Turn ${turnCount}`);
+      displayBoard(gameBoard);
+
+      // Checks for winner, and if so, subsequently ends game by evaluating endGame to True
+      endGame = checkWinner(gameBoard, player);
+
+      //Increments turnCount to move to next turn
+      turnCount++;
+    } while (endGame == false);
   }
 
   // 2-PLAYER MODE
@@ -229,4 +271,8 @@ function checkWinner(gameBoard, player) {
 
   // If no winning sequence, return false
   return false;
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
